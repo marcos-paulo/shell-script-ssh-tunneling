@@ -1,2 +1,2 @@
 #!/bin/bash
-./ssh_tunneling.sh &
+./ssh_tunneling.sh "$1" &

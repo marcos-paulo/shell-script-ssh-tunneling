@@ -60,4 +60,7 @@ list_services
 list_services_to_be_finished
 terminate_services
 list_services
-start
+
+if [ "$1" != "stop" ]; then
+  start
+fi

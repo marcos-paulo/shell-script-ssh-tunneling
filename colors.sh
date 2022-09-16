@@ -9,7 +9,8 @@
 #
 # tambem é possível reproduzir os efeitos de cor utilizando o echo com o -e
 # echo -e "\033[0;31;1m texto de exemplo"
-ESC=
+# ESC=
+ESC="\033"
 #CORES DE TEXTO
 PRETO="$ESC[30m"
 VERMELHO="$ESC[31m"

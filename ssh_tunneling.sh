@@ -35,7 +35,7 @@ testing_connection() {
 }
 
 new_ssh_connection() {
-  ssh_return=$(ssh -R $port_remote_server:$ip_host_local:$port_host_local -N -f -o ConnectTimeout=$connect_timeout root@$ip_remote_server -p $port_ssh_server 2>&1)
+  ssh_return=$(ssh -o ConnectTimeout=$connect_ssh_timeout -R $port_remote_server:$ip_host_local:$port_host_local -N -f root@$ip_remote_server -p $port_ssh_server 2>&1)
 }
 
 loadding() {

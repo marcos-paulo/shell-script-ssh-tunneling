@@ -35,7 +35,12 @@ testing_connection() {
 }
 
 new_ssh_connection() {
-  ssh_return=$(ssh -o ConnectTimeout=$connect_ssh_timeout -R $port_remote_server:$ip_host_local:$port_host_local -N -f root@$ip_remote_server -p $port_ssh_server 2>&1)
+  ssh -R $port_remote_server:$ip_host_local:$port_host_local \
+    -N -f \
+    -o ConnectTimeout=$connect_ssh_timeout \
+    root@$ip_remote_server -p $port_ssh_server 1>./ssh.txt 2>&1
+
+  ssh_return=$?
 }
 
 loadding() {
@@ -59,7 +64,7 @@ loadding() {
 start_service() {
   tag_no_figlet "Initializing connection!"
   while [ 1 ]; do
-    date_log "Server" "Check connection!" "$AMARELO"
+    date_log "Server" "Trying to connect!" "$AMARELO"
     testing_connection
 
     if [[ "$nc_return" =~ .*( succeeded!)$ ]]; then
@@ -75,8 +80,9 @@ start_service() {
       date_log "Server" "Establishing new ssh service connection" "$VERMELHO" "$AMARELO"
       new_ssh_connection
 
-      if [ -n "$ssh_return" ]; then
-        date_log "Server" "$ssh_return" "$VERMELHO"
+      if [ $ssh_return -ne 0 ]; then
+        date_log "Server" "[code: $ssh_return] $(cat ./ssh.txt)" "$VERMELHO"
+        sleep 2
       else
         date_log "Server" "Waiting for connection...  " "$VERMELHO" "$AMARELO" "nom-break"
         loadding

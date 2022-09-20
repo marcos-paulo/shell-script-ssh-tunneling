@@ -14,12 +14,38 @@ PID=$$
 
 list_services() {
   tag_no_figlet "${1:-"Checking active services - Current PID: $PID"}"
-  ps aux | grep -v grep | grep --perl-regexp "ssh -o|ssh -R|ssh_t" | awk '{print" "$2"\t"$11,$12,$13,$14,$15,$16,$17,$18;}'
+  ps aux | grep -v grep | grep --perl-regexp "ssh -o|ssh -R|ssh_t" |
+    awk '{
+      printf " "$2"\t"
+      i = 11
+      while ( i <= 50 ){
+        if ( $i == "" )
+          break
+        else
+          printf " "$i
+          i++
+      }
+      printf "\n"
+    }'
+  # awk '{print" "$2"\t"$11,$12,$13,$14,$15,$16,$17,$18;}'
 }
 
 list_services_to_be_finished() {
   tag_no_figlet "List services to be finished"
-  ps aux | grep -v grep | grep --perl-regexp "ssh -o|ssh -R|ssh_t" | awk '{print" "$2"\t"$11,$12,$13,$14,$15,$16,$17,$18;}' | grep -v $PID
+  ps aux | grep -v grep | grep --perl-regexp "ssh -o|ssh -R|ssh_t" |
+    awk '{
+      printf " "$2"\t"
+      i = 11
+      while ( i <= 50 ){
+        if ( $i == "" )
+          break
+        else
+          printf " "$i
+          i++
+      }
+      printf "\n"
+    }' | grep -v $PID
+  # awk '{print" "$2"\t"$11,$12,$13,$14,$15,$16,$17,$18;}'
 }
 
 terminate_old_services() {

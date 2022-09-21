@@ -36,4 +36,4 @@ $ ./main.sh
 
 ## Deploy
 
-If you use a `git push` mechanism to deploy to a server, connected via ssh authentication with an SSH key, you can use the deploy.sh script that to makes the job easier.
+If you use a `git push` mechanism to deploy to a server, connected via ssh authentication with an SSH key, you can use the deploy.sh script that to makes the job easier. [see more](./deploy/readme.md)

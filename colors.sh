@@ -40,34 +40,27 @@ PISCA_RAPIDO="$ESC[6m"
 INVERSO="$ESC[7m"
 INVISIVEL="$ESC[8m"
 
-function imprimirCores {
-
-  echo $PRETO PRETO $NORMAL
-  echo $VERMELHO VERMELHO $NORMAL
-  echo $VERDE VERDE $NORMAL
-  echo $AMARELO AMARELO $NORMAL
-  echo $AZUL AZUL $NORMAL
-  echo $MAGENTA MAGENTA $NORMAL
-  echo $CIANO CIANO $NORMAL
-  echo $BRANCO BRANCO $NORMAL
-  echo CORES DE FUNDO $NORMAL
-  echo $_PRETO _PRETO $NORMAL
-  echo $_VERMELHO _VERMELHO $NORMAL
-  echo $PRETO $_VERDE _VERDE $NORMAL
-  echo $PRETO $_AMARELO _AMARELO $NORMAL
-  echo $PRETO $_AZUL _AZUL $NORMAL
-  echo $PRETO $_MAGENTA _MAGENTA $NORMAL
-  echo $PRETO $_CIANO _CIANO $NORMAL
-  echo $PRETO $_BRANCO _BRANCO $NORMAL
-  echo MODOS ANSI $NORMAL
-  echo $NORMAL NORMAL $NORMAL
-  echo $NEGRITO NEGRITO $NORMAL
-  echo $BAIXA_INTENSID BAIXA_INTENSID $NORMAL
-  echo $ITALICO ITALICO $NORMAL
-  echo $SUBLINHADO SUBLINHADO $NORMAL
-  echo $PISCANDO PISCANDO $NORMAL
-  echo $PISCA_RAPIDO PISCA_RAPIDO $NORMAL
-  echo $INVERSO INVERSO $NORMAL
-  echo $INVISIVEL INVISIVEL $NORMAL
-
+black() {
+  printf "$ESC[30m${1}$NORMAL"
+}
+red() {
+  printf "$ESC[31m${1}$NORMAL"
+}
+green() {
+  printf "$ESC[32m${1}$NORMAL"
+}
+yellow() {
+  printf "$ESC[33m${1}$NORMAL"
+}
+blue() {
+  printf "$ESC[34m${1}$NORMAL"
+}
+magenta() {
+  printf "$ESC[35m${1}$NORMAL"
+}
+cyan() {
+  printf "$ESC[36m${1}$NORMAL"
+}
+white() {
+  printf "$ESC[37m${1}$NORMAL"
 }

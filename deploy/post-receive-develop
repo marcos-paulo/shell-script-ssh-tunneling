@@ -1,0 +1,6 @@
+#!/bin/sh
+git --work-tree=/home/pi/ssh_tunneling.app --git-dir=/home/pi/ssh_tunneling.git checkout -f develop
+
+cd /home/pi/ssh_tunneling.app
+chmod +x ./*.sh ./env
+#./main.sh

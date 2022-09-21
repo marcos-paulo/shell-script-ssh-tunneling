@@ -3,22 +3,25 @@ source "../env"
 source "../print_log.sh"
 source "../colors.sh"
 
-tag_no_figlet "Starting Deploy"
-
 warning() {
-  red "One parameter is required in deploy.sh, which must be "
-  yellow "main"
-  red " or "
-  yellow "develop\n"
+  branchs=$(git branch | sed -E "s/\*| //g")
+  red "One parameter is required in deploy.sh, which can be ("
+  for b in $branchs; do
+    yellow "$b"
+    red ", "
+  done
+  red "\033[2D)!\n"
   exit 1
 }
 
-match_regex() {
-  match=$(echo "$1" | grep -P "$2")
-  [[ -n $match ]] && $3 || $4
+match_branch() {
+  branch_name=$(git branch | sed -E "s/\*| //g" | grep -P "^$1$")
+  [[ -n $branch_name ]] && $2 || $3
 }
 
-match_regex "$1" "^(main|develop)$" "" "warning"
+match_branch "$1" "" "warning"
+
+tag_no_figlet "Starting deploy in branch $branch_name"
 
 date_log "DEPLOY" "Clean server" "$VERDE"
 
@@ -32,17 +35,12 @@ cat "../env" | ssh pi@$ip_local_server_to_deploy \
 date_log "DEPLOY" "Installing post-receive script" "$VERDE"
 
 install_post_receive() {
-  cat "$1" | ssh pi@$ip_local_server_to_deploy \
-    "cat >> /home/pi/ssh_tunneling.git/hooks/post-receive"
-
-  ssh pi@$ip_local_server_to_deploy \
-    "chmod +x /home/pi/ssh_tunneling.git/hooks/post-receive"
+  cat "./post-receive" | sed -E "s/branch_name/$branch_name/g" | ssh pi@$ip_local_server_to_deploy \
+    'cat >>/home/pi/ssh_tunneling.git/hooks/post-receive &&
+      chmod +x /home/pi/ssh_tunneling.git/hooks/post-receive'
 }
 
-case "$1" in
-"main") install_post_receive "./post-receive" ;;
-"develop") install_post_receive "./post-receive-develop" ;;
-esac
+install_post_receive
 
 date_log "DEPLOY" "Running git push deploy $1" "$VERDE"
 
@@ -51,7 +49,9 @@ git push deploy $1
 date_log "DEPLOY" "Start application" "$VERDE"
 
 ssh pi@$ip_local_server_to_deploy \
-  'cd /home/pi/ssh_tunneling.app && 
-    ./main.sh && 
-    sleep 1 && 
-    tail -n 50 -f ./stdout*.txt'
+  'cd /home/pi/ssh_tunneling.app && ./main.sh'
+
+sleep 2
+
+ssh pi@$ip_local_server_to_deploy \
+  'cd /home/pi/ssh_tunneling.app && tail -n 50 -f ./stdout*.txt'

@@ -1,4 +1,6 @@
-<img src="https://img.shields.io/badge/status-Development-yellowgreen">
+![](https://img.shields.io/badge/status-Development-yellowgreen)
+![GitHub tag (latest by date)](https://img.shields.io/github/v/release/marcos-paulo/ssh_tunneling)
+
 <h1 align="center">SSH Tunneling</h1>
 
 ## Description

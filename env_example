@@ -1,5 +1,7 @@
 #!/bin/bash
 
+ip_local_server_to_deploy=
+
 ip_remote_server=
 port_remote_server=
 port_ssh_server=

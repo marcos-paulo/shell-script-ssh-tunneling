@@ -1,10 +1,10 @@
 #!/bin/bash
-source "./colors.sh"
-source "./print_log.sh"
-source "./ansi-functions.sh"
+source "${ssh_tunneling_path}colors.sh"
+source "${ssh_tunneling_path}print_log.sh"
+source "${ssh_tunneling_path}ansi-functions.sh"
 
-if [ -e "./env" ]; then
-  source ./env
+if [ -e "${ssh_tunneling_path}env" ]; then
+  source ${ssh_tunneling_path}env
 else
   echo ".env: No such file"
   exit 1
@@ -64,7 +64,7 @@ new_ssh_connection() {
   ssh -R $port_remote_server:$ip_host_local:$port_host_local \
     -N -f \
     -o ConnectTimeout=$connect_ssh_timeout \
-    root@$ip_remote_server -p $port_ssh_server 1>./ssh.txt 2>&1
+    root@$ip_remote_server -p $port_ssh_server 1>${ssh_tunneling_path}ssh.txt 2>&1
 
   ssh_return=$?
 }
@@ -107,7 +107,7 @@ start_service() {
       new_ssh_connection
 
       if [ $ssh_return -ne 0 ]; then
-        date_log "Server" "[code: $ssh_return] $(cat ./ssh.txt)" "$VERMELHO"
+        date_log "Server" "[code: $ssh_return] $(cat ${ssh_tunneling_path}ssh.txt)" "$VERMELHO"
         sleep 2
       else
         date_log "Server" "Waiting for connection...  " "$VERMELHO" "$AMARELO" "nom-break"
